@@ -1,3 +1,4 @@
+   
 /*==========================================
 ========      Master timed.js     =========
 ============================================
@@ -219,6 +220,7 @@ export default class Timed extends RunestoneBase {
             async function () {
                 $(this.finishButton).hide(); // hide the finish button for now
                 $(this.flagButton).show();
+                $(this.questionList).show();
                 let mess = document.createElement("p");
                 mess.innerHTML =
                     "<strong>Warning: You will not be able to continue the exam if you close this tab, close the window, or navigate away from this page!</strong>  Make sure you click the Finish Exam button when you are done to submit your work!";
@@ -282,6 +284,22 @@ export default class Timed extends RunestoneBase {
         $(this.flagButton).css("cursor", "pointer");
         this.flagContainer.appendChild(this.flagButton);        // adding button to container
         this.flaggingPlace.appendChild(this.flagContainer);     // adding container to flaggingPlace
+        // making question list button.
+        this.questionList = document.createElement("ul");
+        $(this.questionList).addClass("pagination");
+        this.questionlistContainer = document.createElement("li");
+        this.questionLButton = createElement("button");
+        $(this.questionLButton).addClass("questionBtn");
+        this.questionLButton.innerhtml = "Question List";
+        $(this.questionLButton).attr("aria-labelledby", "Question");
+        $(this.questionLButton).attr("tabindex", "6");
+        $(this.questionLButton).attr("role", "button");
+        $(this.questionLButton).attr("id", "question");
+        $(this.questionLButton).css("cursor", "pointer");
+        this.questionlistContainer.appendChild(this.questionLButton);
+        this.questionList.appendChild(this.questionListContainer);
+
+        //      
         // making "Next" button
         this.rightContainer = document.createElement("li");
         this.rightNavButton = document.createElement("button");
@@ -399,7 +417,17 @@ export default class Timed extends RunestoneBase {
             this.flagButton.innerHTML = "Flag Question";                    // changes text on button
         }
     }
-
+    async handleQuestionButton(event)
+    {
+        // called when flag button is clicked
+        var target = $(event.target).text()
+        if (target.match(/Question List/)) {
+            this.flagButton.innerHTML = "Question List";
+        } else {
+            // will restore current color of question block
+            this.flagButton.innerHTML = "Question List";        // also sets name back
+        }
+    }
     async handleFlag(event) {
         // called when flag button is clicked
         var target = $(event.target).text()
@@ -493,7 +521,7 @@ export default class Timed extends RunestoneBase {
             async function () {
                 if (
                     window.confirm(
-                        "Clicking OK means you are ready to submit your answers and are finished with this assessment."
+                        "OOOOOOOOOOOOOOOOOOOOOOOOOOOOOH DARN"
                     )
                 ) {
                     await this.finishAssessment();
@@ -699,7 +727,7 @@ export default class Timed extends RunestoneBase {
         if (!this.taken) {
             $("#relations-next").hide(); // hide the next page button for now
             $("#relations-prev").hide(); // hide the previous button for now
-            $(this.startBtn).hide();
+            $(this.startBtn).show();
             $(this.pauseBtn).attr("disabled", false);
             if (this.running === 0 && this.paused === 0) {
                 this.running = 1;
